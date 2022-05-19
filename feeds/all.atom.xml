@@ -1,39 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom"><title>momori blog</title><link href="/" rel="alternate"></link><link href="/feeds/all.atom.xml" rel="self"></link><id>/</id><updated>2022-05-18T00:00:00+09:00</updated><entry><title>初めての投稿です</title><link href="/FirstPost.html" rel="alternate"></link><published>2022-05-18T00:00:00+09:00</published><updated>2022-05-18T00:00:00+09:00</updated><author><name>momori</name></author><id>tag:None,2022-05-18:/FirstPost.html</id><summary type="html">&lt;p&gt;Pelicanを使ってブログを作りました&lt;/p&gt;</summary><content type="html">&lt;h2&gt;初めての投稿です．&lt;/h2&gt;
 &lt;p&gt;Pelicanを使ってブログを作りました
-いろんなことの備忘録として使っていきます&lt;/p&gt;</content><category term="test"></category><category term="test"></category></entry><entry><title>CentOS8 ServerのHDD増設</title><link href="/centos8-servernohddzeng-she.html" rel="alternate"></link><published>2022-05-18T00:00:00+09:00</published><updated>2022-05-18T00:00:00+09:00</updated><author><name>momori</name></author><id>tag:None,2022-05-18:/centos8-servernohddzeng-she.html</id><summary type="html">&lt;p&gt;ServerのHDDをRAID5で増設しました&lt;/p&gt;</summary><content type="html">&lt;p&gt;Kubernetesクラスタを作ってみることにしました．\
-詳細は別の機会に記事にすることとして，まずは物理的なサーバが１台のときのK8sクラスタを作ります！\
-その前準備として今回はCentOSのサーバをはじめに作ります．\
-以下の順で作業を進めます．\
-1. CenOS8のインストール
-2. RAID5でHDDを増設&lt;/p&gt;
+いろんなことの備忘録として使っていきます&lt;/p&gt;</content><category term="test"></category><category term="test"></category></entry><entry><title>CentOS8 ServerのHDD増設</title><link href="/centos8-servernohddzeng-she.html" rel="alternate"></link><published>2022-05-18T00:00:00+09:00</published><updated>2022-05-18T00:00:00+09:00</updated><author><name>momori</name></author><id>tag:None,2022-05-18:/centos8-servernohddzeng-she.html</id><summary type="html">&lt;p&gt;ServerのHDDをRAID5で増設しました&lt;/p&gt;</summary><content type="html">&lt;p&gt;Kubernetesクラスタを作ってみることにしました．&lt;/p&gt;
+&lt;p&gt;詳細は別の機会に記事にすることとして，まずは物理的なサーバが１台のときのK8sクラスタを作ります！&lt;/p&gt;
+&lt;p&gt;その前準備として今回はCentOSのサーバをはじめに作ります．&lt;/p&gt;
+&lt;p&gt;以下の順で作業を進めます．&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;CenOS8のインストール&lt;/li&gt;
+&lt;li&gt;RAID5でHDDを増設&lt;/li&gt;
+&lt;/ol&gt;
 &lt;h2&gt;1. CentOS8のインストール&lt;/h2&gt;
 &lt;p&gt;これに関しては備忘録に残しても仕方ないので，省略です．&lt;/p&gt;
 &lt;h2&gt;2. RAID5でHDDを増設&lt;/h2&gt;
-&lt;p&gt;dockerなどのコンテナを用いる一般的なサーバでは，コンテナ保存用のストレージとシステム用のストレージをは別体で分けておくことが望ましいようです．このあたりの詳しい内容は知らないので，また別の日にでも調べてみようと思います．\
-また，コンテナ用ストレージではRAID６を採用することが多いですが（コンテナ用だからってわけではないですが），今回はSATAポートが３つしか空いていないのでRAID5で構築することとします．RAID5でもRAID化する手順は同じなので勉強がてら５で構築しようというわけです．\
-さて，今回用意したHDDは中になにが入っているかよくわかんないものなので，フォーマット等の作業をしていきます．\
-1. パーティションの削除
-2. 新しくパーティションを作成してext4でフォーマット
-3. RAID5化&lt;/p&gt;
+&lt;p&gt;dockerなどのコンテナを用いる一般的なサーバでは，コンテナ保存用のストレージとシステム用のストレージをは別体で分けておくことが望ましいようです．このあたりの詳しい内容は知らないので，また別の日にでも調べてみようと思います．&lt;/p&gt;
+&lt;p&gt;また，コンテナ用ストレージではRAID６を採用することが多いですが（コンテナ用だからってわけではないですが），今回はSATAポートが３つしか空いていないのでRAID5で構築することとします．RAID5でもRAID化する手順は同じなので勉強がてら５で構築しようというわけです．&lt;/p&gt;
+&lt;p&gt;さて，今回用意したHDDは中になにが入っているかよくわかんないものなので，フォーマット等の作業をしていきます．&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;パーティションの削除&lt;/li&gt;
+&lt;li&gt;新しくパーティションを作成してext4でフォーマット&lt;/li&gt;
+&lt;li&gt;RAID5化&lt;/li&gt;
+&lt;/ol&gt;
 &lt;h3&gt;2-1 パーティションの削除&lt;/h3&gt;
 &lt;p&gt;まずはfdiskコマンドの-lオプションで何も指定せず，どんなものが繋がれているかみてみます．&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="n"&gt;root@localhost ~&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="err"&gt;#&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;fdisk&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;l&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;p&gt;今のサーバ環境はネットに接続されてないので，スクショが取れませんm(__)m\
-/dev/sdb, /dev/sdc, /dev/sddのなにかしらが出ていると思います．また，そのなかで１〜４パーティションに別れていたりしたので，とりあえずパーティションを全消去します．/dev/sdaはシステム用だから消しちゃダメ\&lt;/p&gt;
-&lt;p&gt;わたしの環境の場合b〜cの３つあるので，まずは/dev/sdbのHDDから消します．\&lt;/p&gt;
+&lt;p&gt;今のサーバ環境はネットに接続されてないので，スクショが取れませんm(__)m&lt;/p&gt;
+&lt;p&gt;/dev/sdb, /dev/sdc, /dev/sddのなにかしらが出ていると思います．また，そのなかで１〜４パーティションに別れていたりしたので，とりあえずパーティションを全消去します．/dev/sdaはシステム用だから消しちゃダメ&lt;/p&gt;
+&lt;p&gt;わたしの環境の場合b〜cの３つあるので，まずは/dev/sdbのHDDから消します．&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="n"&gt;root@localhost ~&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="err"&gt;#&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;fdisk&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;dev&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;sdb&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;p&gt;これでfdiskのコマンドプロンプトで/dev/sdbをみれます．
-対話モードになるので p で状態を表示します．&lt;/p&gt;
+&lt;p&gt;これでfdiskのコマンドプロンプトで/dev/sdbをみれます．&lt;/p&gt;
+&lt;p&gt;対話モードになるので p で状態を表示します．&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nv"&gt;Command&lt;/span&gt; &lt;span class="ss"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;m&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="nv"&gt;help&lt;/span&gt;&lt;span class="ss"&gt;)&lt;/span&gt;: &lt;span class="nv"&gt;p&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;p&gt;すると，/dev/sdbのパーティション情報が確認できるはずです．\
-対話モードに戻っているので，次は d でパーティションを消去します．&lt;/p&gt;
+&lt;p&gt;すると，/dev/sdbのパーティション情報が確認できるはずです．&lt;/p&gt;
+&lt;p&gt;対話モードに戻っているので，次は d でパーティションを消去します．&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nv"&gt;Command&lt;/span&gt; &lt;span class="ss"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;m&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="nv"&gt;help&lt;/span&gt;&lt;span class="ss"&gt;)&lt;/span&gt;: &lt;span class="nv"&gt;d&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
@@ -45,8 +49,8 @@
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;Partition 1 has been deleted
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;p&gt;この作業を残りのパーティションで行います．\
-最後にすべてのパーティションが削除できたら，w　で保存します．&lt;/p&gt;
+&lt;p&gt;この作業を残りのパーティションで行います．&lt;/p&gt;
+&lt;p&gt;最後にすべてのパーティションが削除できたら，w　で保存します．&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nv"&gt;Command&lt;/span&gt; &lt;span class="ss"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;m&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="nv"&gt;help&lt;/span&gt;&lt;span class="ss"&gt;)&lt;/span&gt;: &lt;span class="nv"&gt;w&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
